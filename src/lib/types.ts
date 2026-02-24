@@ -55,6 +55,7 @@ export interface IntelItem {
   title: string;
   source: string;
   sourceEmoji: string;
+  sourceUrl?: string; // 原始内容源链接
   score: {
     R: number; // Relevance
     Q: number; // Quality

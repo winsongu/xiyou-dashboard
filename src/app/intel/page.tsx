@@ -267,7 +267,7 @@ export default function IntelPage() {
                         </div>
 
                         {/* Actions */}
-                        <div className="flex items-center gap-2 pt-2 border-t-2 border-ink/5">
+                        <div className="flex items-center gap-2 pt-2 border-t-2 border-ink/5 flex-wrap">
                           {item.articleId ? (
                             <Link
                               href={`/articles/${item.articleId}`}
@@ -283,6 +283,17 @@ export default function IntelPage() {
                             <button className="btn-pixel text-xs">
                               📝 生成 Brief
                             </button>
+                          )}
+                          {item.sourceUrl && (
+                            <a
+                              href={item.sourceUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn-pixel text-xs"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              🔗 查看内容源 ↗
+                            </a>
                           )}
                         </div>
                       </div>
