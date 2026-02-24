@@ -7,6 +7,7 @@ const navItems = [
   { href: "/", label: "首页", emoji: "🏠" },
   { href: "/kanban", label: "看板", emoji: "📋" },
   { href: "/intel", label: "情报站", emoji: "👂" },
+  { href: "/articles", label: "内容库", emoji: "📝" },
   { href: "/workshop", label: "工坊", emoji: "⚒️" },
   { href: "/team", label: "团队", emoji: "👥" },
   { href: "/about", label: "关于", emoji: "📖" },

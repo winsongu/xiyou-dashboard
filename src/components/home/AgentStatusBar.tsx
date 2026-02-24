@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function AgentStatusBar() {
   return (
-    <section className="px-4 sm:px-6 mb-8">
+    <section className="px-4 sm:px-6 mb-8 overflow-visible">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-2 mb-4">
           <h2 className="text-lg font-bold text-ink">👥 编队状态</h2>
@@ -15,7 +15,7 @@ export default function AgentStatusBar() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 pb-1 pr-1">
           {agents.map((agent) => (
             <div
               key={agent.id}

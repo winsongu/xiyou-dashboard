@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { intelItems, sourceStatuses } from "@/data/intel";
 
 function ScoreBar({ value, max = 10 }: { value: number; max?: number }) {
@@ -108,9 +109,19 @@ export default function IntelPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="font-bold text-ink text-xs leading-snug max-w-xs">
-                        {item.title}
-                      </div>
+                      {item.articleId ? (
+                        <Link
+                          href={`/articles/${item.articleId}`}
+                          className="font-bold text-ink text-xs leading-snug max-w-xs hover:text-gold-dark transition-colors underline decoration-gold/30 hover:decoration-gold underline-offset-2 block"
+                        >
+                          {item.title}
+                          <span className="inline-block ml-1 text-[10px] text-gold-dark no-underline">→</span>
+                        </Link>
+                      ) : (
+                        <div className="font-bold text-ink text-xs leading-snug max-w-xs">
+                          {item.title}
+                        </div>
+                      )}
                       <span className="text-[10px] text-ink-muted">
                         {item.category}
                       </span>

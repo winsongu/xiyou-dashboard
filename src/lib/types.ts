@@ -69,6 +69,7 @@ export interface IntelItem {
   };
   category: string;
   briefGenerated: boolean;
+  articleId?: string; // 关联文章 ID，有值则可点击查看详情
   platformFit: {
     xhs: number;
     wx: number;

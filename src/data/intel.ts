@@ -19,6 +19,7 @@ export const intelItems: IntelItem[] = [
     score: { R: 10, Q: 9, T: 9, total: 28 },
     category: "AI 基建",
     briefGenerated: true,
+    articleId: "mcp-deep-dive",
     platformFit: { xhs: 3, wx: 5, zhihu: 5, video: 4 },
   },
   {
@@ -29,6 +30,7 @@ export const intelItems: IntelItem[] = [
     score: { R: 9, Q: 9, T: 10, total: 28 },
     category: "AI 编程",
     briefGenerated: true,
+    articleId: "cursor-046-bg-agent",
     platformFit: { xhs: 5, wx: 4, zhihu: 4, video: 5 },
   },
   {
@@ -39,6 +41,7 @@ export const intelItems: IntelItem[] = [
     score: { R: 9, Q: 8, T: 10, total: 27 },
     category: "大模型",
     briefGenerated: true,
+    articleId: "gemini-25-pro",
     platformFit: { xhs: 4, wx: 5, zhihu: 5, video: 3 },
   },
   {
