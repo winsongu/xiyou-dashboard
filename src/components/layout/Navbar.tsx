@@ -8,7 +8,7 @@ const navItems = [
   { href: "/kanban", label: "看板", emoji: "📋" },
   { href: "/intel", label: "情报站", emoji: "👂" },
   { href: "/articles", label: "内容库", emoji: "📝" },
-  { href: "/workshop", label: "工坊", emoji: "⚒️" },
+  { href: "/workshop", label: "战情室", emoji: "🎭" },
   { href: "/team", label: "团队", emoji: "👥" },
   { href: "/about", label: "关于", emoji: "📖" },
 ];
@@ -29,7 +29,7 @@ export default function Navbar() {
               西游编队
             </span>
             <span className="hidden sm:inline-block text-xs bg-gold text-ink px-2 py-0.5 border-2 border-ink font-bold rounded-sm shadow-brutal-sm">
-              v0.1
+              v0.3
             </span>
           </Link>
 

@@ -33,7 +33,7 @@ export default function ActivityFeed() {
             href="/workshop"
             className="text-xs text-sky font-bold hover:underline"
           >
-            查看工坊 →
+            查看战情室 →
           </Link>
         </div>
 
