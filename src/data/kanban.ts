@@ -1,0 +1,163 @@
+import { KanbanItem, KanbanStats } from "@/lib/types";
+
+export const kanbanItems: KanbanItem[] = [
+  {
+    id: "k001",
+    title: "MCP 协议深度解析：AI Agent 的 USB 接口",
+    briefScore: 27,
+    platform: "微信公众号",
+    platformEmoji: "💬",
+    agent: "太白金星",
+    agentEmoji: "⭐",
+    status: "已通过",
+    qualityScore: 91,
+    humanizerScore: 88,
+    reviewVerdict: "PASS",
+    createdAt: "2025-02-23T02:15:00Z",
+    updatedAt: "2025-02-23T06:30:00Z",
+  },
+  {
+    id: "k002",
+    title: "Cursor 0.46 更新：Background Agent 实测",
+    briefScore: 25,
+    platform: "小红书",
+    platformEmoji: "📕",
+    agent: "蜘蛛精",
+    agentEmoji: "🕷️",
+    status: "待审",
+    qualityScore: 84,
+    humanizerScore: 82,
+    createdAt: "2025-02-23T02:20:00Z",
+    updatedAt: "2025-02-23T05:00:00Z",
+  },
+  {
+    id: "k003",
+    title: "Claude Code 实战：从零搭建全栈项目",
+    briefScore: 26,
+    platform: "知乎",
+    platformEmoji: "💎",
+    agent: "哪吒",
+    agentEmoji: "🔥",
+    status: "生产中",
+    createdAt: "2025-02-23T02:30:00Z",
+    updatedAt: "2025-02-23T04:30:00Z",
+  },
+  {
+    id: "k004",
+    title: "Kimi K2 vs GPT-4o：多模态能力横评",
+    briefScore: 24,
+    platform: "小红书",
+    platformEmoji: "📕",
+    agent: "蜘蛛精",
+    agentEmoji: "🕷️",
+    status: "待领取",
+    createdAt: "2025-02-23T02:35:00Z",
+    updatedAt: "2025-02-23T02:35:00Z",
+  },
+  {
+    id: "k005",
+    title: "AI 编程助手 2025 终极指南",
+    briefScore: 28,
+    platform: "微信公众号",
+    platformEmoji: "💬",
+    agent: "太白金星",
+    agentEmoji: "⭐",
+    status: "生产中",
+    createdAt: "2025-02-23T02:40:00Z",
+    updatedAt: "2025-02-23T04:00:00Z",
+  },
+  {
+    id: "k006",
+    title: "Windsurf Wave 9：AI IDE 新玩法",
+    briefScore: 22,
+    platform: "知乎",
+    platformEmoji: "💎",
+    agent: "哪吒",
+    agentEmoji: "🔥",
+    status: "打回",
+    qualityScore: 68,
+    humanizerScore: 72,
+    reviewVerdict: "REVISE",
+    createdAt: "2025-02-22T02:10:00Z",
+    updatedAt: "2025-02-22T07:00:00Z",
+  },
+  {
+    id: "k007",
+    title: "Devin 2.0 深度体验：自主编程 Agent 进化之路",
+    briefScore: 26,
+    platform: "视频号",
+    platformEmoji: "🎬",
+    agent: "悟空",
+    agentEmoji: "🐒",
+    status: "生产中",
+    createdAt: "2025-02-23T02:45:00Z",
+    updatedAt: "2025-02-23T04:30:00Z",
+  },
+  {
+    id: "k008",
+    title: "Gemini 2.5 Pro 发布：100万 Token 上下文实测",
+    briefScore: 29,
+    platform: "微信公众号",
+    platformEmoji: "💬",
+    agent: "太白金星",
+    agentEmoji: "⭐",
+    status: "已通过",
+    qualityScore: 93,
+    humanizerScore: 90,
+    reviewVerdict: "PASS",
+    createdAt: "2025-02-22T02:05:00Z",
+    updatedAt: "2025-02-22T06:45:00Z",
+  },
+  {
+    id: "k009",
+    title: "Notion AI 写作助手：效率提升 300% 的秘密",
+    briefScore: 21,
+    platform: "小红书",
+    platformEmoji: "📕",
+    agent: "蜘蛛精",
+    agentEmoji: "🕷️",
+    status: "已通过",
+    qualityScore: 86,
+    humanizerScore: 84,
+    reviewVerdict: "PASS",
+    createdAt: "2025-02-22T02:15:00Z",
+    updatedAt: "2025-02-22T06:00:00Z",
+  },
+  {
+    id: "k010",
+    title: "OpenAI Codex CLI：终端里的 AI 程序员",
+    briefScore: 25,
+    platform: "知乎",
+    platformEmoji: "💎",
+    agent: "哪吒",
+    agentEmoji: "🔥",
+    status: "升级",
+    qualityScore: 78,
+    humanizerScore: 80,
+    reviewVerdict: "POLISH",
+    createdAt: "2025-02-22T02:20:00Z",
+    updatedAt: "2025-02-22T06:30:00Z",
+  },
+];
+
+export const kanbanStats: KanbanStats = {
+  date: "2025-02-23",
+  topicsProposed: 10,
+  topicsPassed: 3,
+  avgQuality: 87.5,
+  avgHumanizer: 84.3,
+};
+
+export function getKanbanByStatus(
+  status: KanbanItem["status"]
+): KanbanItem[] {
+  return kanbanItems.filter((item) => item.status === status);
+}
+
+export function getStatusCount(): Record<string, number> {
+  const counts: Record<string, number> = {};
+  kanbanItems.forEach((item) => {
+    counts[item.status] = (counts[item.status] || 0) + 1;
+  });
+  return counts;
+}

@@ -1,0 +1,351 @@
+@import "tailwindcss";
+
+/* =============================================
+   西游编队 Design System
+   Neo-brutalist + Pixel Game + 西游 Theme
+   ============================================= */
+
+@theme inline {
+  /* Core Colors */
+  --color-paper: #fdfbf7;
+  --color-paper-dark: #f5f0e8;
+  --color-ink: #2d2d2d;
+  --color-ink-light: #666666;
+  --color-ink-muted: #999999;
+
+  /* Accent Colors */
+  --color-gold: #ffe066;
+  --color-gold-dark: #f5c518;
+  --color-fire: #ff4757;
+  --color-fire-dark: #e63946;
+  --color-jade: #2ed573;
+  --color-jade-dark: #26b860;
+  --color-sky: #70a1ff;
+  --color-sky-dark: #5b8ef5;
+  --color-purple: #a855f7;
+  --color-purple-dark: #9333ea;
+
+  /* Status Colors */
+  --color-online: #2ed573;
+  --color-idle: #ffe066;
+  --color-error: #ff4757;
+
+  /* Brutalist System */
+  --shadow-brutal: 3px 3px 0 #2d2d2d;
+  --shadow-brutal-sm: 2px 2px 0 #2d2d2d;
+  --shadow-brutal-lg: 5px 5px 0 #2d2d2d;
+  --shadow-brutal-gold: 3px 3px 0 #f5c518;
+  --shadow-brutal-fire: 3px 3px 0 #e63946;
+
+  /* Border */
+  --border-brutal: 3px solid #2d2d2d;
+  --radius-brutal: 4px;
+
+  /* Spacing */
+  --space-pixel: 4px;
+
+  /* Fonts */
+  --font-pixel: "Silkscreen", "Press Start 2P", monospace;
+  --font-body: "LXGW WenKai", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+/* =============================================
+   Base Styles
+   ============================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+/* Pixel-perfect rendering for pixel art elements */
+.pixel-render {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* =============================================
+   Neo-Brutalist Card System
+   ============================================= */
+
+.card-brutal {
+  background: white;
+  border: 3px solid var(--color-ink);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--color-ink);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.card-brutal:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+
+.card-brutal:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--color-ink);
+}
+
+.card-brutal-gold {
+  background: var(--color-gold);
+  border: 3px solid var(--color-ink);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--color-ink);
+}
+
+.card-brutal-fire {
+  background: var(--color-fire);
+  border: 3px solid var(--color-ink);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--color-ink);
+  color: white;
+}
+
+/* =============================================
+   Pixel Badge / Tag System
+   ============================================= */
+
+.badge-pixel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 2px solid var(--color-ink);
+  border-radius: 2px;
+  box-shadow: 2px 2px 0 var(--color-ink);
+  white-space: nowrap;
+}
+
+.badge-pass {
+  background: var(--color-jade);
+  color: white;
+}
+
+.badge-review {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+.badge-wip {
+  background: var(--color-sky);
+  color: white;
+}
+
+.badge-reject {
+  background: var(--color-fire);
+  color: white;
+}
+
+.badge-pending {
+  background: var(--color-paper-dark);
+  color: var(--color-ink);
+}
+
+.badge-upgrade {
+  background: var(--color-purple);
+  color: white;
+}
+
+/* =============================================
+   Pixel Button
+   ============================================= */
+
+.btn-pixel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  border: 3px solid var(--color-ink);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--color-ink);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  background: white;
+  color: var(--color-ink);
+}
+
+.btn-pixel:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+
+.btn-pixel:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0 var(--color-ink);
+}
+
+.btn-pixel-gold {
+  background: var(--color-gold);
+}
+
+.btn-pixel-fire {
+  background: var(--color-fire);
+  color: white;
+}
+
+/* =============================================
+   Progress Bar (Pixel Style)
+   ============================================= */
+
+.progress-pixel {
+  height: 12px;
+  background: var(--color-paper-dark);
+  border: 2px solid var(--color-ink);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-pixel-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* =============================================
+   Status Indicator
+   ============================================= */
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--color-ink);
+  display: inline-block;
+}
+
+.status-dot-online {
+  background: var(--color-online);
+  animation: pulse-green 2s infinite;
+}
+
+.status-dot-idle {
+  background: var(--color-idle);
+}
+
+.status-dot-error {
+  background: var(--color-error);
+  animation: pulse-red 1.5s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* =============================================
+   Terminal / Activity Feed
+   ============================================= */
+
+.terminal-feed {
+  background: var(--color-ink);
+  color: var(--color-jade);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  border: 3px solid var(--color-ink);
+  border-radius: 4px;
+  overflow-y: auto;
+}
+
+.terminal-line {
+  padding: 2px 12px;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.terminal-line:hover {
+  background: #3a3a3a;
+}
+
+.terminal-timestamp {
+  color: var(--color-ink-muted);
+}
+
+.terminal-agent {
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.terminal-action-success {
+  color: var(--color-jade);
+}
+
+.terminal-action-warning {
+  color: var(--color-gold);
+}
+
+.terminal-action-error {
+  color: var(--color-fire);
+}
+
+.terminal-action-info {
+  color: var(--color-sky);
+}
+
+/* =============================================
+   Pixel Scrollbar
+   ============================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-paper-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-muted);
+  border: 1px solid var(--color-ink);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-light);
+}
+
+/* =============================================
+   Animations
+   ============================================= */
+
+@keyframes float-pixel {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-float {
+  animation: float-pixel 3s ease-in-out infinite;
+}
+
+.animate-cursor {
+  animation: blink-cursor 1s step-end infinite;
+}
+
+/* =============================================
+   Responsive Grid
+   ============================================= */
+
+.grid-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
