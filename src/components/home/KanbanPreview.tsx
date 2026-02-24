@@ -3,25 +3,12 @@ import Link from "next/link";
 
 function getStatusBadgeClass(status: string): string {
   const map: Record<string, string> = {
-    已通过: "badge-pass",
-    待审: "badge-review",
-    生产中: "badge-wip",
-    打回: "badge-reject",
-    待领取: "badge-pending",
-    升级: "badge-upgrade",
+    已完成: "badge-pass",
+    审核中: "badge-review",
+    进行中: "badge-wip",
+    待办: "badge-pending",
   };
   return map[status] ?? "badge-pending";
-}
-
-function getVerdictLabel(verdict?: string): string | null {
-  if (!verdict) return null;
-  const map: Record<string, string> = {
-    PASS: "✅ PASS",
-    POLISH: "🔧 POLISH",
-    REVISE: "📝 REVISE",
-    REJECT: "❌ REJECT",
-  };
-  return map[verdict] ?? verdict;
 }
 
 export default function KanbanPreview() {
@@ -47,7 +34,7 @@ export default function KanbanPreview() {
               {/* Header */}
               <div className="flex items-start justify-between gap-2 mb-3">
                 <span
-                  className={`badge-pixel ${getStatusBadgeClass(item.status)}`}
+                  className={`badge-pixel ${getStatusBadgeClass(item.status)} text-[10px]`}
                 >
                   {item.status}
                 </span>
@@ -67,32 +54,12 @@ export default function KanbanPreview() {
                     {item.agent}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-mono text-ink-muted">
-                  <span>Brief: {item.briefScore}/30</span>
-                  {item.qualityScore && (
-                    <span
-                      className={
-                        item.qualityScore >= 85
-                          ? "text-jade"
-                          : item.qualityScore >= 70
-                          ? "text-gold-dark"
-                          : "text-fire"
-                      }
-                    >
-                      Q:{item.qualityScore}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Verdict */}
-              {item.reviewVerdict && (
-                <div className="mt-2 pt-2 border-t-2 border-dashed border-ink/10">
-                  <span className="text-xs font-mono font-bold">
-                    {getVerdictLabel(item.reviewVerdict)}
+                {item.dueLabel && (
+                  <span className="text-[10px] text-ink-muted">
+                    📅 {item.dueLabel}
                   </span>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ))}
         </div>

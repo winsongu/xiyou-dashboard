@@ -17,71 +17,52 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { kanbanItems as initialItems, kanbanStats } from "@/data/kanban";
+import { kanbanItems as initialItems } from "@/data/kanban";
+import { agents } from "@/data/agents";
 import type { KanbanItem, KanbanStatus } from "@/lib/types";
 
-const statusColumns: { status: KanbanStatus; emoji: string; color: string }[] =
-  [
-    { status: "待领取", emoji: "📥", color: "bg-paper-dark" },
-    { status: "生产中", emoji: "⚡", color: "bg-sky/20" },
-    { status: "待审", emoji: "🔍", color: "bg-gold/20" },
-    { status: "已通过", emoji: "✅", color: "bg-jade/20" },
-    { status: "打回", emoji: "🔙", color: "bg-fire/20" },
-    { status: "升级", emoji: "⬆️", color: "bg-purple/20" },
-  ];
-
-function getVerdictBadge(verdict?: string) {
-  if (!verdict) return null;
-  const map: Record<string, { label: string; cls: string }> = {
-    PASS: { label: "PASS", cls: "badge-pass" },
-    POLISH: { label: "POLISH", cls: "badge-upgrade" },
-    REVISE: { label: "REVISE", cls: "badge-review" },
-    REJECT: { label: "REJECT", cls: "badge-reject" },
-  };
-  const v = map[verdict];
-  if (!v) return null;
-  return <span className={`badge-pixel ${v.cls} text-[10px]`}>{v.label}</span>;
-}
+const statusColumns: {
+  status: KanbanStatus;
+  icon: string;
+  color: string;
+  countColor: string;
+}[] = [
+  { status: "待办", icon: "○", color: "text-ink-muted", countColor: "text-ink-muted" },
+  { status: "进行中", icon: "◐", color: "text-sky", countColor: "text-sky" },
+  { status: "审核中", icon: "◉", color: "text-gold-dark", countColor: "text-gold-dark" },
+  { status: "已完成", icon: "●", color: "text-jade", countColor: "text-jade" },
+];
 
 function KanbanCard({ item }: { item: KanbanItem }) {
   return (
-    <div className="card-brutal p-3 bg-white">
-      {/* Platform & Agent */}
-      <div className="flex items-center justify-between mb-2">
+    <div className="card-brutal p-4 bg-white">
+      {/* Platform Icon + Priority */}
+      <div className="flex items-center gap-1.5 mb-3">
         <span className="text-lg">{item.platformEmoji}</span>
-        <div className="flex items-center gap-1">
+        {item.priority === "high" && (
+          <span className="w-2.5 h-2.5 rounded-full bg-fire" />
+        )}
+      </div>
+
+      {/* Title */}
+      <h3 className="font-bold text-sm text-ink leading-snug mb-3">
+        {item.title}
+      </h3>
+
+      {/* Bottom: Agent + Due */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
           <span className="text-sm">{item.agentEmoji}</span>
           <span className="text-[10px] font-bold text-ink-light">
             {item.agent}
           </span>
         </div>
-      </div>
-
-      {/* Title */}
-      <h3 className="font-bold text-xs text-ink leading-snug mb-2 line-clamp-3">
-        {item.title}
-      </h3>
-
-      {/* Scores */}
-      <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-mono">
-        <span className="text-ink-muted">B:{item.briefScore}</span>
-        {item.qualityScore && (
-          <span
-            className={
-              item.qualityScore >= 85
-                ? "text-jade font-bold"
-                : item.qualityScore >= 70
-                ? "text-gold-dark"
-                : "text-fire"
-            }
-          >
-            Q:{item.qualityScore}
-          </span>
+        {item.dueLabel && (
+          <div className="flex items-center gap-1 text-[10px] text-ink-muted">
+            <span>📅</span>
+            <span>{item.dueLabel}</span>
+          </div>
         )}
-        {item.humanizerScore && (
-          <span className="text-sky">H:{item.humanizerScore}</span>
-        )}
-        {getVerdictBadge(item.reviewVerdict)}
       </div>
     </div>
   );
@@ -113,13 +94,15 @@ function SortableCard({ item }: { item: KanbanItem }) {
 function DroppableColumn({
   colStatus,
   items,
-  emoji,
+  icon,
   color,
+  countColor,
 }: {
   colStatus: KanbanStatus;
   items: KanbanItem[];
-  emoji: string;
+  icon: string;
   color: string;
+  countColor: string;
 }) {
   const { setNodeRef } = useSortable({
     id: `column-${colStatus}`,
@@ -130,13 +113,14 @@ function DroppableColumn({
   return (
     <div className="flex flex-col" ref={setNodeRef}>
       {/* Column Header */}
-      <div
-        className={`card-brutal ${color} px-3 py-2 mb-3 flex items-center justify-between`}
-      >
-        <span className="font-bold text-sm">
-          {emoji} {colStatus}
+      <div className="flex items-center justify-between mb-4 px-1">
+        <div className="flex items-center gap-2">
+          <span className={`text-base ${color}`}>{icon}</span>
+          <span className="font-bold text-sm text-ink">{colStatus}</span>
+        </div>
+        <span className={`text-sm font-bold font-mono ${countColor}`}>
+          {items.length}
         </span>
-        <span className="badge-pixel text-[10px]">{items.length}</span>
       </div>
 
       {/* Cards */}
@@ -144,7 +128,7 @@ function DroppableColumn({
         items={items.map((i) => i.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="flex flex-col gap-3 min-h-[100px]">
+        <div className="flex flex-col gap-3 min-h-[120px]">
           {items.map((item) => (
             <SortableCard key={item.id} item={item} />
           ))}
@@ -154,6 +138,11 @@ function DroppableColumn({
               拖拽卡片到此处
             </div>
           )}
+
+          {/* Add Task Placeholder */}
+          <button className="w-full py-3 text-xs text-ink-muted border-2 border-dashed border-ink/15 rounded hover:border-ink/30 hover:text-ink-light transition-colors">
+            + 添加任务
+          </button>
         </div>
       </SortableContext>
     </div>
@@ -163,10 +152,19 @@ function DroppableColumn({
 export default function KanbanPage() {
   const [items, setItems] = useState<KanbanItem[]>(initialItems);
   const [activeItem, setActiveItem] = useState<KanbanItem | null>(null);
+  const [filterAgent, setFilterAgent] = useState<string>("全部");
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
+
+  // Get unique agents from items for filter
+  const agentList = [
+    { name: "全部", emoji: "" },
+    ...agents
+      .filter((a) => items.some((i) => i.agent === a.name))
+      .map((a) => ({ name: a.name, emoji: a.emoji })),
+  ];
 
   function handleDragStart(event: DragStartEvent) {
     const draggedItem = items.find((i) => i.id === event.active.id);
@@ -179,14 +177,11 @@ export default function KanbanPage() {
     if (!over) return;
 
     const activeId = active.id as string;
-
-    // Determine target column
     let targetStatus: KanbanStatus | null = null;
 
     if (typeof over.id === "string" && over.id.startsWith("column-")) {
       targetStatus = over.id.replace("column-", "") as KanbanStatus;
     } else {
-      // Dropped on another card — find that card's status
       const overItem = items.find((i) => i.id === over.id);
       if (overItem) targetStatus = overItem.status;
     }
@@ -201,46 +196,93 @@ export default function KanbanPage() {
   }
 
   function getItemsByStatus(status: KanbanStatus): KanbanItem[] {
-    return items.filter((i) => i.status === status);
+    return items
+      .filter((i) => i.status === status)
+      .filter((i) => filterAgent === "全部" || i.agent === filterAgent);
   }
+
+  // Stats (based on all items, not filtered)
+  const stats = {
+    total: items.length,
+    todo: items.filter((i) => i.status === "待办").length,
+    inProgress: items.filter((i) => i.status === "进行中").length,
+    reviewing: items.filter((i) => i.status === "审核中").length,
+    done: items.filter((i) => i.status === "已完成").length,
+  };
 
   return (
     <div className="min-h-screen bg-paper py-8 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-ink flex items-center gap-2">
-              📋 生产看板
-            </h1>
+            <h1 className="text-2xl font-bold text-ink">任务看板</h1>
             <p className="text-sm text-ink-muted mt-1">
-              {kanbanStats.date} · 立项 {kanbanStats.topicsProposed} · 通过{" "}
-              {kanbanStats.topicsPassed} ·{" "}
-              <span className="text-gold-dark font-bold">
-                ↔ 可拖拽调整状态
-              </span>
+              团队协作与任务进度追踪
             </p>
           </div>
+          <button className="btn-pixel btn-pixel-fire text-sm">
+            + 新建任务
+          </button>
+        </div>
 
-          {/* Stats Row */}
-          <div className="flex gap-2">
-            <div className="card-brutal px-3 py-2 text-center">
-              <div className="text-lg font-bold text-jade">
-                {kanbanStats.avgQuality}
-              </div>
-              <div className="text-[10px] text-ink-muted font-bold">
-                均质量分
-              </div>
+        {/* Stats Bar */}
+        <div className="grid grid-cols-5 gap-3 mb-6">
+          <div className="card-brutal px-4 py-3 text-center">
+            <div className="text-2xl font-bold text-ink font-mono">
+              {stats.total}
             </div>
-            <div className="card-brutal px-3 py-2 text-center">
-              <div className="text-lg font-bold text-sky">
-                {kanbanStats.avgHumanizer}
-              </div>
-              <div className="text-[10px] text-ink-muted font-bold">
-                均去味分
-              </div>
-            </div>
+            <div className="text-[10px] text-ink-muted font-bold">总任务</div>
           </div>
+          <div className="card-brutal px-4 py-3 text-center">
+            <div className="text-2xl font-bold text-ink-muted font-mono">
+              {stats.todo}
+            </div>
+            <div className="text-[10px] text-ink-muted font-bold">待办</div>
+          </div>
+          <div className="card-brutal px-4 py-3 text-center">
+            <div className="text-2xl font-bold text-sky font-mono">
+              {stats.inProgress}
+            </div>
+            <div className="text-[10px] text-ink-muted font-bold">进行中</div>
+          </div>
+          <div className="card-brutal px-4 py-3 text-center">
+            <div className="text-2xl font-bold text-gold-dark font-mono">
+              {stats.reviewing}
+            </div>
+            <div className="text-[10px] text-ink-muted font-bold">审核中</div>
+          </div>
+          <div className="card-brutal px-4 py-3 text-center">
+            <div className="text-2xl font-bold text-fire font-mono">
+              {stats.done}
+            </div>
+            <div className="text-[10px] text-ink-muted font-bold">已完成</div>
+          </div>
+        </div>
+
+        {/* Agent Filter */}
+        <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1">
+          <span className="text-xs text-ink-muted font-bold whitespace-nowrap">
+            🔍 筛选：
+          </span>
+          {agentList.map((agent) => (
+            <button
+              key={agent.name}
+              onClick={() => setFilterAgent(agent.name)}
+              className={`
+                flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold
+                border-2 rounded-sm transition-all whitespace-nowrap
+                ${
+                  filterAgent === agent.name
+                    ? "bg-ink text-white border-ink shadow-brutal-sm"
+                    : "border-ink/20 text-ink-light hover:border-ink hover:bg-white"
+                }
+              `}
+            >
+              {agent.emoji && <span className="text-sm">{agent.emoji}</span>}
+              <span>{agent.name}</span>
+            </button>
+          ))}
         </div>
 
         {/* Kanban Columns with DnD */}
@@ -250,21 +292,22 @@ export default function KanbanPage() {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {statusColumns.map((col) => (
               <DroppableColumn
                 key={col.status}
                 colStatus={col.status}
                 items={getItemsByStatus(col.status)}
-                emoji={col.emoji}
+                icon={col.icon}
                 color={col.color}
+                countColor={col.countColor}
               />
             ))}
           </div>
 
           <DragOverlay>
             {activeItem ? (
-              <div className="w-[200px] rotate-2 opacity-90">
+              <div className="w-[250px] rotate-2 opacity-90">
                 <KanbanCard item={activeItem} />
               </div>
             ) : null}

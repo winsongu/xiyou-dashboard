@@ -25,20 +25,20 @@ export default async function ArticlePage({
       <div className="max-w-3xl mx-auto">
         {/* Back Button */}
         <Link
-          href="/intel"
+          href="/articles"
           className="btn-pixel mb-6 text-xs inline-flex items-center"
         >
-          ← 返回情报站
+          ← 返回内容库
         </Link>
 
         {/* Article Header */}
         <header className="mb-6">
           {/* Meta Tags */}
           <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="badge-pixel badge-wip text-[10px]">
+            <span className="badge-pixel text-[10px]">
               {article.category}
             </span>
-            <span className="badge-pixel text-[10px]">
+            <span className="badge-pixel badge-wip text-[10px]">
               {article.platformEmoji} {article.platform}
             </span>
             <span className="badge-pixel text-[10px]">
@@ -48,6 +48,11 @@ export default async function ArticlePage({
                 ? "🔍 审核中"
                 : "📝 草稿"}
             </span>
+            {article.section === "ai-output" && (
+              <span className="badge-pixel badge-upgrade text-[10px]">
+                🤖 AI 产出
+              </span>
+            )}
           </div>
 
           {/* Title */}
@@ -134,7 +139,7 @@ export default async function ArticlePage({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {articles
               .filter((a) => a.id !== article.id)
-              .slice(0, 2)
+              .slice(0, 4)
               .map((related) => (
                 <Link
                   key={related.id}

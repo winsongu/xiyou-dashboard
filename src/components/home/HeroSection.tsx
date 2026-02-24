@@ -1,9 +1,11 @@
 import { agents } from "@/data/agents";
-import { kanbanStats } from "@/data/kanban";
+import { kanbanItems } from "@/data/kanban";
 
 export default function HeroSection() {
   const activeAgents = agents.filter((a) => a.status === "active").length;
   const totalAgents = agents.length;
+  const totalTasks = kanbanItems.length;
+  const doneTasks = kanbanItems.filter((i) => i.status === "已完成").length;
 
   return (
     <section className="relative overflow-hidden bg-paper py-12 px-4 sm:px-6">
@@ -38,26 +40,18 @@ export default function HeroSection() {
               </div>
               <div className="card-brutal p-3 text-center min-w-[80px]">
                 <div className="text-2xl font-bold text-jade">
-                  {kanbanStats.topicsPassed}
+                  {doneTasks}
                 </div>
                 <div className="text-xs text-ink-muted font-bold">
-                  今日通过
+                  今日完成
                 </div>
               </div>
               <div className="card-brutal p-3 text-center min-w-[80px]">
                 <div className="text-2xl font-bold text-sky">
-                  {kanbanStats.topicsProposed}
+                  {totalTasks}
                 </div>
                 <div className="text-xs text-ink-muted font-bold">
-                  今日立项
-                </div>
-              </div>
-              <div className="card-brutal p-3 text-center min-w-[80px]">
-                <div className="text-2xl font-bold text-gold-dark">
-                  {kanbanStats.avgQuality}
-                </div>
-                <div className="text-xs text-ink-muted font-bold">
-                  平均质量
+                  总任务
                 </div>
               </div>
             </div>

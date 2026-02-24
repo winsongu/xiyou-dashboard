@@ -24,36 +24,30 @@ export interface Agent {
   description: string;
 }
 
-export type KanbanStatus =
-  | "待领取"
-  | "生产中"
-  | "待审"
-  | "已通过"
-  | "打回"
-  | "升级";
+export type KanbanStatus = "待办" | "进行中" | "审核中" | "已完成";
 
 export interface KanbanItem {
   id: string;
   title: string;
-  briefScore: number;
   platform: string;
   platformEmoji: string;
   agent: string;
   agentEmoji: string;
   status: KanbanStatus;
+  priority?: "high" | "normal" | "low";
+  dueLabel?: string; // e.g. "今天", "明天", "后天", "本周"
   qualityScore?: number;
   humanizerScore?: number;
-  reviewVerdict?: "PASS" | "POLISH" | "REVISE" | "REJECT";
   createdAt: string;
   updatedAt: string;
 }
 
 export interface KanbanStats {
-  date: string;
-  topicsProposed: number;
-  topicsPassed: number;
-  avgQuality: number;
-  avgHumanizer: number;
+  total: number;
+  todo: number;
+  inProgress: number;
+  reviewing: number;
+  done: number;
 }
 
 export interface IntelItem {

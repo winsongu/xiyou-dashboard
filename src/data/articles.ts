@@ -8,7 +8,7 @@ export interface Article {
   id: string;
   title: string;
   subtitle?: string;
-  category: string;
+  category: string; // 文章类型标签: "洞见" | "博客文章" | "教程" | "测评" | "视频脚本"
   platform: string;
   platformEmoji: string;
   agent: string;
@@ -21,6 +21,7 @@ export interface Article {
   qualityScore?: number;
   humanizerScore?: number;
   status: "draft" | "review" | "published";
+  section: "reviewed" | "ai-output"; // reviewed=审核待发布, ai-output=AI自主产出
 }
 
 export type ArticleBlock =
@@ -34,17 +35,22 @@ export type ArticleBlock =
   | { type: "divider" };
 
 export const articles: Article[] = [
+  // =====================================================
+  // 审核待发布 (reviewed) — 已经审核通过，等待人工确认发布
+  // =====================================================
   {
     id: "mcp-deep-dive",
     title: "MCP 协议深度解析：AI Agent 的 USB 接口",
-    subtitle: "为什么 MCP 会成为 AI 生态的事实标准？从协议设计到实战应用全面解读",
-    category: "AI 基建",
+    subtitle:
+      "为什么 MCP 会成为 AI 生态的事实标准？从协议设计到实战应用全面解读",
+    category: "洞见",
     platform: "微信公众号",
     platformEmoji: "💬",
     agent: "太白金星",
     agentEmoji: "⭐",
     publishedAt: "2025-02-23",
     readTime: "12 分钟",
+    section: "reviewed",
     coverImages: [
       {
         url: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop",
@@ -178,9 +184,7 @@ await server.connect(transport);`,
         text: "MCP 之于 AI Agent，就像 HTTP 之于 Web。它不仅是一个技术协议，更是一个生态共识。",
         author: "飞月 AI 编辑部",
       },
-      {
-        type: "divider",
-      },
+      { type: "divider" },
       {
         type: "paragraph",
         text: "总结来看，MCP 协议凭借其简洁的设计、强大的扩展性以及行业巨头的背书，已经奠定了 AI Agent 基础设施的地位。对于开发者来说，现在正是学习和布局 MCP 生态的最佳时机。",
@@ -192,102 +196,18 @@ await server.connect(transport);`,
     status: "published",
   },
   {
-    id: "cursor-046-bg-agent",
-    title: "Cursor 0.46 更新：Background Agent 实测",
-    subtitle: "后台自动编程时代来临？我们花了 48 小时深度体验",
-    category: "AI 编程",
-    platform: "小红书",
-    platformEmoji: "📕",
-    agent: "蜘蛛精",
-    agentEmoji: "🕷️",
-    publishedAt: "2025-02-23",
-    readTime: "8 分钟",
-    coverImages: [
-      {
-        url: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop",
-        alt: "编程IDE界面",
-        caption: "Cursor 0.46 全新 Background Agent 功能",
-      },
-      {
-        url: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop",
-        alt: "代码编辑器",
-        caption: "Background Agent 在后台自动完成编程任务",
-      },
-    ],
-    content: [
-      {
-        type: "callout",
-        emoji: "⚡",
-        title: "速读要点",
-        text: "Cursor 0.46 最大亮点是 Background Agent：你可以把编程任务丢给它，然后去喝杯咖啡，回来代码就写好了。",
-      },
-      {
-        type: "heading",
-        level: 2,
-        text: "什么是 Background Agent？",
-      },
-      {
-        type: "paragraph",
-        text: "Background Agent 是 Cursor 0.46 版本引入的革命性功能。与传统的 AI 编程助手不同，它不需要你盯着屏幕等待——你可以在后台启动一个编程任务，然后继续做其他事情。",
-      },
-      {
-        type: "paragraph",
-        text: "它基于云端虚拟机运行，拥有独立的开发环境。这意味着它可以安装依赖、运行测试、甚至启动开发服务器来验证自己的代码。",
-      },
-      {
-        type: "image",
-        url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=350&fit=crop",
-        alt: "笔记本电脑编程",
-        caption: "图 1：Background Agent 工作流程——提交任务后即可离开",
-      },
-      {
-        type: "heading",
-        level: 2,
-        text: "实测体验：优缺点一览",
-      },
-      {
-        type: "list",
-        ordered: false,
-        items: [
-          "✅ 优点：真正的异步编程，适合重复性任务",
-          "✅ 优点：独立环境，不影响本地开发",
-          "✅ 优点：支持多任务并行",
-          "❌ 缺点：需要 Pro 订阅（$20/月）",
-          "❌ 缺点：复杂项目理解能力有限",
-          "❌ 缺点：网络依赖，离线无法使用",
-        ],
-      },
-      {
-        type: "quote",
-        text: "Background Agent 不是要取代程序员，而是给程序员一个不知疲倦的实习生。",
-        author: "蜘蛛精",
-      },
-      {
-        type: "heading",
-        level: 2,
-        text: "适用场景推荐",
-      },
-      {
-        type: "paragraph",
-        text: "经过 48 小时的深度测试，我们总结出 Background Agent 最适合的三类场景：单元测试编写、代码重构、以及样板代码生成。对于需要深度上下文理解的复杂任务，目前还是建议使用 Tab 模式的 Composer。",
-      },
-    ],
-    tags: ["Cursor", "AI IDE", "Background Agent", "编程工具"],
-    qualityScore: 84,
-    humanizerScore: 82,
-    status: "review",
-  },
-  {
     id: "gemini-25-pro",
     title: "Gemini 2.5 Pro 发布：100万 Token 上下文实测",
-    subtitle: "Google 最强模型来了，但它真的能处理 100 万 Token 吗？",
-    category: "大模型",
+    subtitle:
+      "Google 最强模型来了，但它真的能处理 100 万 Token 吗？",
+    category: "测评",
     platform: "微信公众号",
     platformEmoji: "💬",
     agent: "太白金星",
     agentEmoji: "⭐",
     publishedAt: "2025-02-22",
     readTime: "15 分钟",
+    section: "reviewed",
     coverImages: [
       {
         url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop",
@@ -298,11 +218,6 @@ await server.connect(transport);`,
         url: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=400&fit=crop",
         alt: "神经网络",
         caption: "100 万 Token 上下文窗口的技术突破",
-      },
-      {
-        url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=400&fit=crop",
-        alt: "数据矩阵",
-        caption: "基准测试成绩全面领先",
       },
     ],
     content: [
@@ -319,7 +234,7 @@ await server.connect(transport);`,
       },
       {
         type: "paragraph",
-        text: "我们在 5 个维度对 Gemini 2.5 Pro 进行了全面评测，对比对象包括 Claude 3.5 Sonnet、GPT-4o 和 Kimi K2。测试涵盖代码生成、长文理解、多模态识别、逻辑推理和创意写作。",
+        text: "我们在 5 个维度对 Gemini 2.5 Pro 进行了全面评测，对比对象包括 Claude 3.5 Sonnet、GPT-4o 和 Kimi K2。",
       },
       {
         type: "image",
@@ -329,34 +244,12 @@ await server.connect(transport);`,
       },
       {
         type: "heading",
-        level: 3,
-        text: "代码生成能力",
-      },
-      {
-        type: "paragraph",
-        text: "在 HumanEval 和 SWE-bench 基准测试中，Gemini 2.5 Pro 的表现令人印象深刻。特别是在多文件代码理解和大型项目重构方面，100 万 Token 的上下文窗口终于让 AI \"看到\" 了完整的项目全貌。",
-      },
-      {
-        type: "code",
-        language: "python",
-        code: `# Gemini 2.5 Pro 可以理解的项目规模
-# 约等于 50,000 行代码 + 完整文档
-project_tokens = {
-    "source_code": 600_000,   # ~30K 行代码
-    "documentation": 200_000, # README + API 文档
-    "test_files": 150_000,    # 测试代码
-    "config": 50_000,         # 配置文件
-    "total": 1_000_000        # 100 万 Token
-}`,
-      },
-      {
-        type: "heading",
         level: 2,
         text: "价格与性价比分析",
       },
       {
         type: "paragraph",
-        text: "Gemini 2.5 Pro 的定价为输入 $1.25/M tokens，输出 $10/M tokens。与 Claude 3.5 Sonnet 对比：同等上下文长度的请求，Gemini 的成本约高出 2-3 倍。但考虑到其独有的百万级上下文能力，在特定场景下物有所值。",
+        text: "Gemini 2.5 Pro 的定价为输入 $1.25/M tokens，输出 $10/M tokens。与 Claude 3.5 Sonnet 对比：同等上下文长度的请求，Gemini 的成本约高出 2-3 倍。",
       },
       {
         type: "quote",
@@ -364,10 +257,382 @@ project_tokens = {
         author: "太白金星",
       },
     ],
-    tags: ["Gemini", "Google", "大模型", "LLM", "100万Token"],
+    tags: ["Gemini", "Google", "大模型", "LLM"],
     qualityScore: 93,
     humanizerScore: 90,
     status: "published",
+  },
+
+  // =====================================================
+  // AI 自主产出 (ai-output) — AI 自动生成，等待人工确认审核
+  // =====================================================
+  {
+    id: "cursor-046-bg-agent",
+    title: "Cursor 0.46 更新：Background Agent 实测",
+    subtitle:
+      "后台自动编程时代来临？我们花了 48 小时深度体验",
+    category: "博客文章",
+    platform: "小红书",
+    platformEmoji: "📕",
+    agent: "蜘蛛精",
+    agentEmoji: "🕷️",
+    publishedAt: "2025-02-24",
+    readTime: "8 分钟",
+    section: "ai-output",
+    coverImages: [
+      {
+        url: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop",
+        alt: "编程IDE界面",
+        caption: "Cursor 0.46 全新 Background Agent 功能",
+      },
+    ],
+    content: [
+      {
+        type: "callout",
+        emoji: "⚡",
+        title: "速读要点",
+        text: "Cursor 0.46 最大亮点是 Background Agent：你可以把编程任务丢给它，然后去喝杯咖啡，回来代码就写好了。",
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "什么是 Background Agent？",
+      },
+      {
+        type: "paragraph",
+        text: "Background Agent 是 Cursor 0.46 版本引入的革命性功能。与传统的 AI 编程助手不同，它不需要你盯着屏幕等待。",
+      },
+      {
+        type: "image",
+        url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=350&fit=crop",
+        alt: "笔记本电脑编程",
+        caption: "图 1：Background Agent 工作流程——提交任务后即可离开",
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "实测体验：优缺点一览",
+      },
+      {
+        type: "list",
+        ordered: false,
+        items: [
+          "✅ 真正的异步编程，适合重复性任务",
+          "✅ 独立环境，不影响本地开发",
+          "❌ 需要 Pro 订阅（$20/月）",
+          "❌ 复杂项目理解能力有限",
+        ],
+      },
+      {
+        type: "quote",
+        text: "Background Agent 不是要取代程序员，而是给程序员一个不知疲倦的实习生。",
+        author: "蜘蛛精",
+      },
+    ],
+    tags: ["Cursor", "AI IDE", "Background Agent", "编程工具"],
+    qualityScore: 84,
+    humanizerScore: 82,
+    status: "review",
+  },
+  {
+    id: "ai-content-pipeline",
+    title: "构建 AI 内容流水线：15 分钟内从 RSS 订阅到文章发布",
+    subtitle:
+      "利用 AI 构建自动化内容流水线，将 RSS 订阅源转化为已发布文章",
+    category: "博客文章",
+    platform: "微信公众号",
+    platformEmoji: "💬",
+    agent: "太白金星",
+    agentEmoji: "⭐",
+    publishedAt: "2025-02-23",
+    readTime: "10 分钟",
+    section: "ai-output",
+    coverImages: [
+      {
+        url: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=400&fit=crop",
+        alt: "数据流水线",
+        caption: "从数据到内容的自动化流水线",
+      },
+    ],
+    content: [
+      {
+        type: "callout",
+        emoji: "🔧",
+        title: "教程摘要",
+        text: "了解如何利用 AI 构建自动化内容流水线，将 RSS 订阅源转化为已发布文章，并通过真实案例演示如何在 15 分钟内完成科技新闻处理。",
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "架构设计",
+      },
+      {
+        type: "paragraph",
+        text: "整个流水线分为四个阶段：RSS 抓取 → 内容分析 → AI 改写 → 多平台发布。每个阶段都可以独立配置和监控。",
+      },
+    ],
+    tags: ["AI 自动化", "内容流水线", "RSS", "自动发布"],
+    qualityScore: 87,
+    humanizerScore: 85,
+    status: "review",
+  },
+  {
+    id: "code-review-bot",
+    title: "公开构建 AI 智能体：创建代码审查机器人的经验教训",
+    subtitle:
+      "跟随一个代码审查 AI 智能体从首次提交到上线的完整历程",
+    category: "博客文章",
+    platform: "知乎",
+    platformEmoji: "💎",
+    agent: "哪吒",
+    agentEmoji: "🔥",
+    publishedAt: "2025-02-23",
+    readTime: "12 分钟",
+    section: "ai-output",
+    coverImages: [
+      {
+        url: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&h=400&fit=crop",
+        alt: "代码审查",
+        caption: "AI 代码审查机器人架构",
+      },
+    ],
+    content: [
+      {
+        type: "callout",
+        emoji: "🤖",
+        title: "项目背景",
+        text: "跟随一个代码审查 AI 智能体从首次提交到上线的完整历程，涵盖技术决策、用户反馈以及沿途收获的经验教训。",
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "为什么需要 AI 代码审查？",
+      },
+      {
+        type: "paragraph",
+        text: "人工代码审查是软件开发中最耗时的环节之一。AI 代码审查机器人可以在几秒内完成初步审查，让人类审查者专注于架构级别的讨论。",
+      },
+    ],
+    tags: ["AI Agent", "代码审查", "开源", "实战"],
+    qualityScore: 82,
+    humanizerScore: 79,
+    status: "review",
+  },
+  {
+    id: "ai-native-enterprise",
+    title: "原生 AI 企业：为何从零构建胜过后期追加",
+    subtitle:
+      "以 AI 为基石构建的企业与后期改造 AI 的企业存在本质差异",
+    category: "洞见",
+    platform: "微信公众号",
+    platformEmoji: "💬",
+    agent: "太白金星",
+    agentEmoji: "⭐",
+    publishedAt: "2025-02-23",
+    readTime: "9 分钟",
+    section: "ai-output",
+    coverImages: [
+      {
+        url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=400&fit=crop",
+        alt: "现代企业",
+        caption: "AI 原生企业的竞争优势",
+      },
+    ],
+    content: [
+      {
+        type: "heading",
+        level: 2,
+        text: "什么是 AI 原生企业？",
+      },
+      {
+        type: "paragraph",
+        text: "本文将阐释为何第一天的架构决策将决定竞争优势。AI 原生企业从组织结构、产品设计到运营流程，都以 AI 为核心进行设计。",
+      },
+    ],
+    tags: ["AI 企业", "商业", "架构决策"],
+    qualityScore: 89,
+    humanizerScore: 86,
+    status: "review",
+  },
+  {
+    id: "three-ai-architectures",
+    title: "三种 AI 智能体架构模式：何时使用哪一种",
+    subtitle:
+      "探索三种经过验证的 AI 智能体架构——反应式、审议式和混合式",
+    category: "博客文章",
+    platform: "知乎",
+    platformEmoji: "💎",
+    agent: "哪吒",
+    agentEmoji: "🔥",
+    publishedAt: "2025-02-22",
+    readTime: "11 分钟",
+    section: "ai-output",
+    coverImages: [
+      {
+        url: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=400&fit=crop",
+        alt: "技术架构",
+        caption: "三种 AI 智能体架构对比",
+      },
+    ],
+    content: [
+      {
+        type: "heading",
+        level: 2,
+        text: "架构选择指南",
+      },
+      {
+        type: "paragraph",
+        text: "通过实际案例和决策标准，为您的应用场景选择最合适的模式。反应式适合简单任务，审议式适合复杂推理，混合式适合需要灵活切换的场景。",
+      },
+    ],
+    tags: ["AI 架构", "Agent", "系统设计"],
+    qualityScore: 85,
+    humanizerScore: 83,
+    status: "review",
+  },
+  {
+    id: "raw-data-to-article",
+    title: "构建 AI 内容流水线：从原始数据到发布文章",
+    subtitle:
+      "学习如何通过构建一个将原始数据转化为精修文章的流程",
+    category: "博客文章",
+    platform: "小红书",
+    platformEmoji: "📕",
+    agent: "蜘蛛精",
+    agentEmoji: "🕷️",
+    publishedAt: "2025-02-22",
+    readTime: "7 分钟",
+    section: "ai-output",
+    coverImages: [
+      {
+        url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop",
+        alt: "内容创作",
+        caption: "从数据到文章的转化流程",
+      },
+    ],
+    content: [
+      {
+        type: "heading",
+        level: 2,
+        text: "流水线设计",
+      },
+      {
+        type: "paragraph",
+        text: "利用人工智能实现内容创作自动化。包含一个使用产品目录和客户评价的真实案例。从数据清洗、结构化到内容生成，全流程自动化。",
+      },
+    ],
+    tags: ["内容创作", "自动化", "流水线"],
+    qualityScore: 81,
+    humanizerScore: 80,
+    status: "review",
+  },
+  {
+    id: "voxyz-24h-lessons",
+    title: "24小时自主运营：哪些环节出现问题，哪些环节运行良好",
+    subtitle:
+      "AI 无人值守运行 24 小时的核心经验总结",
+    category: "洞见",
+    platform: "微信公众号",
+    platformEmoji: "💬",
+    agent: "太白金星",
+    agentEmoji: "⭐",
+    publishedAt: "2025-02-22",
+    readTime: "6 分钟",
+    section: "ai-output",
+    coverImages: [
+      {
+        url: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=400&fit=crop",
+        alt: "团队协作",
+        caption: "24 小时自主运营经验分享",
+      },
+    ],
+    content: [
+      {
+        type: "heading",
+        level: 2,
+        text: "运营总结",
+      },
+      {
+        type: "paragraph",
+        text: "包括 3 个关键故障点和 2 个意外收获，这些经验塑造了我们的自动化策略。无人值守运行暴露了意外的瓶颈、内存溢出和用户行为模式。",
+      },
+    ],
+    tags: ["自主运营", "AI Agent", "经验总结"],
+    qualityScore: 88,
+    humanizerScore: 87,
+    status: "review",
+  },
+  {
+    id: "async-video-standup",
+    title: "面向工程团队的异步视频站会",
+    subtitle:
+      "用结构化的异步视频更新取代每日同步站会",
+    category: "洞见",
+    platform: "视频号",
+    platformEmoji: "🎬",
+    agent: "二郎神",
+    agentEmoji: "👁️",
+    publishedAt: "2025-02-21",
+    readTime: "5 分钟",
+    section: "ai-output",
+    coverImages: [
+      {
+        url: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop",
+        alt: "远程团队协作",
+        caption: "异步视频站会方案",
+      },
+    ],
+    content: [
+      {
+        type: "heading",
+        level: 2,
+        text: "为什么要异步站会？",
+      },
+      {
+        type: "paragraph",
+        text: "通过 AI 转录自动生成任务卡片。减少上下文切换，同时保持跨时区团队协同。结构化的视频更新取代每日同步站会。",
+      },
+    ],
+    tags: ["团队协作", "异步", "视频站会"],
+    qualityScore: 80,
+    humanizerScore: 78,
+    status: "draft",
+  },
+  {
+    id: "ai-cobuilding-90-days",
+    title: "与 AI 智能体公开共建：90 天后的心得体会",
+    subtitle:
+      "公开构建 AI 智能体产品的真实历程",
+    category: "博客文章",
+    platform: "微信公众号",
+    platformEmoji: "💬",
+    agent: "太白金星",
+    agentEmoji: "⭐",
+    publishedAt: "2025-02-21",
+    readTime: "8 分钟",
+    section: "ai-output",
+    coverImages: [
+      {
+        url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop",
+        alt: "团队协作",
+        caption: "90 天公开共建历程",
+      },
+    ],
+    content: [
+      {
+        type: "heading",
+        level: 2,
+        text: "90 天心得",
+      },
+      {
+        type: "paragraph",
+        text: "直面实际挑战，分享有效策略，并总结在社交媒体上实时部署智能体工作流的经验教训。公开构建 AI 智能体产品的真实历程。",
+      },
+    ],
+    tags: ["公开构建", "AI Agent", "经验分享"],
+    qualityScore: 86,
+    humanizerScore: 84,
+    status: "review",
   },
 ];
 
@@ -377,4 +642,12 @@ export function getArticleById(id: string): Article | undefined {
 
 export function getAllArticles(): Article[] {
   return articles;
+}
+
+export function getReviewedArticles(): Article[] {
+  return articles.filter((a) => a.section === "reviewed");
+}
+
+export function getAiOutputArticles(): Article[] {
+  return articles.filter((a) => a.section === "ai-output");
 }
